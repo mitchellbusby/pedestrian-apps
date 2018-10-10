@@ -1,0 +1,56 @@
+<html>
+    <head>
+    </head>
+    <body>
+        <script id="counter-template" type="text/x-handlebars-template">
+            <p>The count is: {{number}}</p>
+        </script>
+        <div class="modifiers">
+            <button class="button--decrement">-</button>
+            <button class="button--increment">+</button>
+        </div>
+        <div class="counter" id="view-container">
+            <p>Loading..</p>
+        </div>
+    </body>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(() => {
+            let state = {
+                number: 0,
+            };
+            
+            const updateView = (stateToUse) => {
+                // Get the template as a HTML string
+                const source = $('#counter-template').html();
+                // Compile the template to be used by Handlebars tpl language
+                const template = Handlebars.compile(source);
+                // Inject the values into the template
+                const viewResult = template(stateToUse);
+                // Push the result into the DOM element
+                $('#view-container').html(viewResult);
+            }
+
+            const updateState = (newState) => {
+                // Updates the state using the fancy Object.assign to merge the two together
+                state = Object.assign({}, state, newState);
+                updateView(state);
+            }
+
+            const onIncrement = () => {
+                updateState({number: state.number + 1});
+            }
+
+            const onDecrement = () => {
+                updateState({number: state.number - 1});
+            }
+
+            $('.button--increment').click(onIncrement);
+
+            $('.button--decrement').click(onDecrement);
+
+            updateState({});
+        });
+    </script>
+</html>
